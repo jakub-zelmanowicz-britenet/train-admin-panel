@@ -1,17 +1,26 @@
 package pl.jakub.adminpanel;
 
+import pl.jakub.adminpanel.obj.CreateProductOption;
+import pl.jakub.adminpanel.obj.Option;
 import pl.jakub.adminpanel.service.OptionService;
+import pl.jakub.adminpanel.service.ProductService;
 
 public class Main {
 
-    private final OptionService optionService;
+    private static OptionService optionService;
 
-    public Main() {
-        this.optionService = new OptionService();
+    public static void configure() {
+        ProductService productService = new ProductService();
+
+        optionService = new OptionService();
+        optionService.registerOption(new CreateProductOption(productService));
     }
 
     public static void main(String[] args) {
-        System.out.println("Test");
+        configure();
+
+        optionService.findOption("create-product")
+                .ifPresent(Option::execute);
     }
 
 }
