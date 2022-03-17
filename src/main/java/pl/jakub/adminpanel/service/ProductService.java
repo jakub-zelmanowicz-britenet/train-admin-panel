@@ -2,36 +2,34 @@ package pl.jakub.adminpanel.service;
 
 import pl.jakub.adminpanel.obj.Product;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ProductService {
 
-    private final List<Product> products;
+    private final Map<Integer, Product> products;
 
     public ProductService() {
-        this.products = new ArrayList<>();
+        this.products = new HashMap<>();
     }
 
-    public void createProduct(int id, String name) {
-        this.products.add(new Product(id, name));
+    public void createProduct(Product product) {
+        this.products.put(product.getId(), product);
     }
 
-    public void updateProduct(int id, String name) {
-        this.products.stream()
-                .filter( product -> product.getId() == id )
-                .findFirst()
-                .ifPresent( product -> product.setName(name) );
+    public void updateProduct(Product product) {
+        if (this.products.containsKey(product.getId())) {
+            this.products.replace(product.getId(), product);
+        }
+        else {
+            throw new IllegalStateException("No product under given ID");
+        }
     }
 
     public Optional<Product> findProduct(int id) {
-        return this.products.stream()
-                .filter( product -> product.getId() == id )
-                .findFirst();
+        return Optional.of(this.products.get(id));
     }
 
     public void removeProduct(int id) {
-        this.products.removeIf( product -> product.getId() == id );
+        this.products.remove(id);
     }
 }

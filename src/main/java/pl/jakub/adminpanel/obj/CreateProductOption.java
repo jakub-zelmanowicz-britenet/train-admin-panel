@@ -1,5 +1,6 @@
 package pl.jakub.adminpanel.obj;
 
+import pl.jakub.adminpanel.builder.ProductBuilder;
 import pl.jakub.adminpanel.service.ProductService;
 
 public class CreateProductOption extends Option {
@@ -14,7 +15,9 @@ public class CreateProductOption extends Option {
 
     @Override
     public void execute() {
-        productService.createProduct(1, "Test");
+        productService.createProduct(new ProductBuilder()
+                .setName("Test")
+                .getProduct());
 
         productService.findProduct(1)
                 .ifPresent( product -> {

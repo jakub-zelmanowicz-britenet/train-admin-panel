@@ -5,6 +5,10 @@ public class Product {
     private final int id;
     private String name;
 
+    public Product(){
+        this.id = 0;
+    }
+
     public Product(int id, String name) {
         this.id = id;
         this.name = name;
