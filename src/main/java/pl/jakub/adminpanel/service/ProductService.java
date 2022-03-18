@@ -6,14 +6,18 @@ import java.util.*;
 
 public class ProductService {
 
+    private final DatabaseService databaseService;
     private final Map<Integer, Product> products;
 
-    public ProductService() {
+    public ProductService(DatabaseService databaseService) {
+        this.databaseService = databaseService;
         this.products = new HashMap<>();
     }
 
     public void createProduct(Product product) {
-        this.products.put(product.getId(), product);
+        this.databaseService.performDML(
+                "INSERT INTO product (name, categoryId) VALUES ('" + product.getName() + "', '" + product.getCategoryId() + "')"
+        );
     }
 
     public void updateProduct(Product product) {

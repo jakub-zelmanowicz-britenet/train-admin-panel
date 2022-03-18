@@ -1,17 +1,12 @@
 package pl.jakub.adminpanel.obj;
 
-public class Product {
+public class Category {
 
     private final int id;
     private String name;
-    private int categoryId;
 
-    public Product(){
+    public Category(String name) {
         this.id = 0;
-    }
-
-    public Product(int id, String name) {
-        this.id = id;
         this.name = name;
     }
 
@@ -23,15 +18,7 @@ public class Product {
         return name;
     }
 
-    public int getCategoryId() {
-        return categoryId;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
     }
 }
