@@ -15,7 +15,7 @@ public class CreateProductOption extends Option {
 
     @Override
     public void execute() {
-        productService.createProduct(new ProductBuilder()
+        productService.createProduct(new ProductBuilder(0)
                 .setName("Test")
                 .getProduct());
 

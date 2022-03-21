@@ -10,9 +10,8 @@ public class Product {
         this.id = 0;
     }
 
-    public Product(int id, String name) {
+    public Product(int id) {
         this.id = id;
-        this.name = name;
     }
 
     public int getId() {
