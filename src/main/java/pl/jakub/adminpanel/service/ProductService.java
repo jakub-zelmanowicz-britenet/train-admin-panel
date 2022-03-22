@@ -35,31 +35,53 @@ public class ProductService {
     }
 
     public Optional<Product> findProduct(int id) {
-        try (Connection connection = this.databaseService.getConnection() ;
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT * FROM product WHERE id=" + id)) {
+        String query = String.format("SELECT * FROM product WHERE id=%d", id);
+        Product product = this.databaseService.performQuery(query, resultSet -> {
 
-            ResultSet results = statement.executeQuery();
-            if (results.next()) {
+            if (resultSet.next()) {
 
-                String name = results.getString("name");
-                int categoryId = results.getInt("categoryId");
+                String name = resultSet.getString("name");
+                int categoryId = resultSet.getInt("categoryId");
 
-                Product product = new ProductBuilder(id)
+                return new ProductBuilder(id)
                         .setName(name)
                         .setCategoryId(categoryId)
                         .getProduct();
-
-                return Optional.of(product);
             }
 
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+            return null;
 
-        return Optional.empty();
+        });
+
+        return Optional.ofNullable(product);
     }
+
+//    public Optional<Product> findProduct(int id) {
+//        try (Connection connection = this.databaseService.getConnection() ;
+//             PreparedStatement statement = connection.prepareStatement(
+//                     "SELECT * FROM product WHERE id=" + id)) {
+//
+//            ResultSet results = statement.executeQuery();
+//            if (results.next()) {
+//
+//                String name = results.getString("name");
+//                int categoryId = results.getInt("categoryId");
+//
+//                Product product = new ProductBuilder(id)
+//                        .setName(name)
+//                        .setCategoryId(categoryId)
+//                        .getProduct();
+//
+//                return Optional.of(product);
+//            }
+//
+//        }
+//        catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return Optional.empty();
+//    }
 
     public void removeProduct(int id) {
         this.products.remove(id);

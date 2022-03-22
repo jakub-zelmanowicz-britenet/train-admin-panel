@@ -2,6 +2,7 @@ package pl.jakub.adminpanel.service;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import pl.jakub.adminpanel.util.ResultsParser;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,6 +35,30 @@ public class DatabaseService {
              PreparedStatement statement = connection.prepareStatement(dml)) {
 
             return statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public<U> U performQuery(String query, ResultsParser<U> parser) {
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            return parser.parse(resultSet);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet performQuery(String dml) {
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(dml)) {
+
+            return statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

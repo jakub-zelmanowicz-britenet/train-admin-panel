@@ -1,6 +1,8 @@
 package pl.jakub.adminpanel;
 
+import pl.jakub.adminpanel.builder.ProductBuilder;
 import pl.jakub.adminpanel.obj.CreateProductOption;
+import pl.jakub.adminpanel.obj.Product;
 import pl.jakub.adminpanel.service.DatabaseService;
 import pl.jakub.adminpanel.service.DatabaseServiceOld;
 import pl.jakub.adminpanel.service.OptionService;
@@ -14,7 +16,7 @@ public class Main {
     public static void configure() {
         databaseService = DatabaseService.getInstance();
 
-        ProductService productService = new ProductService(databaseService);
+        ProductService productService = new ProductService(databaseService);;
 
         optionService = new OptionService();
         optionService.registerOption(new CreateProductOption(productService));
